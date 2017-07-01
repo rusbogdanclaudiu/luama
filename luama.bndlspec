@@ -1,0 +1,28 @@
+<bundlespec>
+	<manifest>
+    	<name>macchina.io lua embed bundle</name>
+		<symbolicName>io.macchina.luama</symbolicName>
+		<version>1.0.0</version>
+		<vendor>Bogdan Rus</vendor>
+		<copyright>(c) 2017, Bogdan Rus</copyright>
+		<activator>
+			<class>Luama::BundleActivator</class>
+			<library>io.macchina.luama</library>
+		</activator>
+		<lazyStart>false</lazyStart>
+		<runLevel>610</runLevel>
+		<!--<dependency>
+			<symbolicName>io.macchina.devices</symbolicName>
+			<version>[1.0.0, 2.0.0)</version>
+		</dependency>-->
+	</manifest>
+	<code>
+		bin/*.dll,
+		bin/*.pdb,
+		bin/${osName}/${osArch}/*.so,
+		bin/${osName}/${osArch}/*.dylib,
+	</code>
+	<files>
+		bundle/*
+	</files>
+</bundlespec>
