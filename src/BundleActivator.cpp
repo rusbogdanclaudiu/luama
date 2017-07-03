@@ -49,6 +49,8 @@ class BundleActivator: public Poco::OSP::BundleActivator
 public:
 	BundleActivator()
 	{
+		pState = luaL_newstate();
+		luaL_openlibs(pState);
 	}
 	
 	~BundleActivator()
@@ -57,7 +59,8 @@ public:
 	
 	void start(BundleContext::Ptr pContext)
 	{
-		std::cout << "hello world" << std::endl;
+		std::cout << "hello world from c++" << std::endl;
+		luaL_dofile(pState, "hello.lua");
 	}
 		
 	void stop(BundleContext::Ptr pContext)
@@ -65,6 +68,7 @@ public:
 	}
 	
 private:
+	lua_State *pState;
 };
 
 
