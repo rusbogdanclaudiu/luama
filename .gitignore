@@ -1,3 +1,9 @@
+# lua
+src/lua/*
+
+# bundles
+bundles/
+
 # Prerequisites
 *.d
 
