@@ -31,6 +31,11 @@
 #include <vector>
 #include <set>
 #include <iostream>
+#include <memory>
+
+#include "lua.h"
+#include "lualib.h"
+#include "lauxlib.h"
 
 
 using Poco::OSP::BundleContext;
@@ -60,6 +65,14 @@ public:
 	void start(BundleContext::Ptr pContext)
 	{
 		std::cout << "hello world from c++" << std::endl;
+#if __cplusplus < 201103L
+        std::auto_ptr<std::istream> pStream(pContext->pBundle->getResource("hello.lua"))
+#else
+        std::unique_ptr<std::istream> pStream(pContext->pBundle->getResource("hello.lua"));
+#endif
+		while (pStream)
+      		std::cout << char(pStream.get());
+		
 		luaL_dofile(pState, "hello.lua");
 	}
 		
