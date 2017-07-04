@@ -13,7 +13,7 @@ include $(POCO_BASE)/build/rules/global
 
 INCLUDE += -I./src/lua/src
 
-LIBRARY += -L./src/lua/src -L$(PROJECT_BASE)/lib/$(OSNAME)/$(OSARCH)
+LIBRARY += -L$(PROJECT_BASE)/tests/luama/src/lua/src -L$(PROJECT_BASE)/lib/$(OSNAME)/$(OSARCH)
 
 #objects = LinuxLED BundleActivator 
 objects = BundleActivator 

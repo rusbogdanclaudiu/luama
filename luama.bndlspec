@@ -1,6 +1,6 @@
 <bundlespec>
 	<manifest>
-    	<name>macchina.io lua embed bundle</name>
+    	<name>continental lua embed bundle</name>
 		<symbolicName>com.continental.luama</symbolicName>
 		<version>1.0.0</version>
 		<vendor>Bogdan Rus</vendor>

@@ -28,15 +28,13 @@
 #include "Poco/Format.h"
 #include "Poco/StringTokenizer.h"
 #include "Poco/Util/Timer.h"
+#include "Poco/StreamCopier.h"
 #include <vector>
 #include <set>
 #include <iostream>
 #include <memory>
 
-#include "lua.h"
-#include "lualib.h"
-#include "lauxlib.h"
-
+#include "lua.hpp"
 
 using Poco::OSP::BundleContext;
 using Poco::OSP::ServiceRegistry;
@@ -65,13 +63,22 @@ public:
 	void start(BundleContext::Ptr pContext)
 	{
 		std::cout << "hello world from c++" << std::endl;
+		try {
 #if __cplusplus < 201103L
-        std::auto_ptr<std::istream> pStream(pContext->pBundle->getResource("hello.lua"))
+        std::auto_ptr<std::istream> pStream(pContext->thisBundle()->getResource("hello.lua"));
 #else
-        std::unique_ptr<std::istream> pStream(pContext->pBundle->getResource("hello.lua"));
+        std::unique_ptr<std::istream> pStream(pContext->thisBundle()->getResource("hello.lua"));
 #endif
-		while (pStream)
-      		std::cout << char(pStream.get());
+		if (pStream.get())
+		{
+			std::string data;
+			Poco::StreamCopier::copyToString(*pStream, data);
+			std::cout << "data:"<< data << std::endl;
+		}
+
+		}catch (Poco::Exception& ex) {
+			std::cout<<ex.message()<<std::endl;
+		}
 		
 		luaL_dofile(pState, "hello.lua");
 	}
