@@ -22,9 +22,8 @@
 		src/lua/src/liblua*.so*,
 		bin/${osName}/${osArch}/*.so,
 		bin/${osName}/${osArch}/*.dylib,
-		src/hello.lua
 	</code>
 	<files>
-		bundle/*
+		src/hello.lua
 	</files>
 </bundlespec>

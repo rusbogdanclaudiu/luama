@@ -63,6 +63,7 @@ public:
 	void start(BundleContext::Ptr pContext)
 	{
 		std::cout << "hello world from c++" << std::endl;
+
 		try {
 #if __cplusplus < 201103L
         std::auto_ptr<std::istream> pStream(pContext->thisBundle()->getResource("hello.lua"));
@@ -74,13 +75,14 @@ public:
 			std::string data;
 			Poco::StreamCopier::copyToString(*pStream, data);
 			std::cout << "data:"<< data << std::endl;
+			luaL_dostring(pState, data.c_str());
 		}
 
 		}catch (Poco::Exception& ex) {
 			std::cout<<ex.message()<<std::endl;
 		}
 		
-		luaL_dofile(pState, "hello.lua");
+		//luaL_dofile(pState, "hello.lua");
 	}
 		
 	void stop(BundleContext::Ptr pContext)
