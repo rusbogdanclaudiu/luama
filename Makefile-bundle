@@ -12,8 +12,11 @@ BUNDLE_TOOL = $(POCO_BASE)/OSP/BundleCreator/$(POCO_HOST_BINDIR)/bundle
 include $(POCO_BASE)/build/rules/global
 
 INCLUDE += -I./src/lua/src
+INCLUDE += -I./src/Selene/include
 
 LIBRARY += -L$(PROJECT_BASE)/tests/luama/src/lua/src -L$(PROJECT_BASE)/lib/$(OSNAME)/$(OSARCH)
+
+CXXFLAGS += -std=c++11
 
 #objects = LinuxLED BundleActivator 
 objects = BundleActivator 

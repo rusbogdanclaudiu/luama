@@ -1,6 +1,10 @@
 # lua
 src/lua/*
 
+# Selene
+src/Selene/*
+
+
 # bundles
 bundles/
 

@@ -34,7 +34,8 @@
 #include <iostream>
 #include <memory>
 
-#include "lua.hpp"
+//#include "lua.hpp"
+#include "selene.h"
 
 using Poco::OSP::BundleContext;
 using Poco::OSP::ServiceRegistry;
@@ -46,14 +47,46 @@ using Poco::OSP::PreferencesService;
 
 namespace Luama {
 
+struct Persistence {
+	int writes = 0;
+
+	std::string readString(std::string key) { return key + "'s value"; }
+	int readInt(std::string key) { return 42; }
+
+	void writeString(std::string key, std::string value) { writes++; }
+	void writeInt(std::string key, int value) { writes++; }
+};
+
+struct Radio_TunerInfo {
+	int uid;
+	std::string psName;
+};
+/*
+struct Radio {
+	sel::function<void(Radio_TunerInfo&)> callback;
+
+	void subscribe(sel::function<void(Radio_TunerInfo&)> const &cb ) {
+		callback = cb;
+	}
+
+	void unsubscribe(sel::function<void(Radio_TunerInfo&)> const &cb) {
+		callback = nullptr;
+	}
+
+	void notify(Radio_TunerInfo& info) { 
+		if(callback)
+			callback(info);
+	}
+};
+*/
 
 class BundleActivator: public Poco::OSP::BundleActivator
 {
 public:
 	BundleActivator()
 	{
-		pState = luaL_newstate();
-		luaL_openlibs(pState);
+		//pState = luaL_newstate();
+		//luaL_openlibs(pState);
 	}
 	
 	~BundleActivator()
@@ -75,7 +108,25 @@ public:
 			std::string data;
 			Poco::StreamCopier::copyToString(*pStream, data);
 			std::cout << "data:"<< data << std::endl;
-			luaL_dostring(pState, data.c_str());
+
+			sel::State state{true};
+
+			Persistence pers;
+
+			state["persistence"].SetObj(pers, "readString", &Persistence::readString,
+											"readInt", &Persistence::readInt,
+											"writeString", &Persistence::writeString,
+											"writeInt", &Persistence::writeInt,
+											"writes", &Persistence::writes);
+
+			/*state["Radio"].SetClass<Radio>("subscribe", &Radio::subscribe,
+												"unsubscribe", &Radio::unsubscribe,
+												"notify", &Radio::notify);*/
+			state(data.c_str());
+
+
+
+			//luaL_dostring(pState, data.c_str());
 		}
 
 		}catch (Poco::Exception& ex) {
@@ -90,7 +141,7 @@ public:
 	}
 	
 private:
-	lua_State *pState;
+	//lua_State *pState;
 };
 
 
